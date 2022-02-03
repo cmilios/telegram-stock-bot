@@ -7,19 +7,17 @@ from telegram.ext.filters import Filters
 from FtxClient import FtxClient
 import logging
 import os
+
 key = os.environ['FTXKEY']
 secret = os.environ['FTXSEC']
 token = os.environ["TOKEN"]
+PORT = int(os.environ.get('PORT', 5000))
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-updater = Updater(token,
-                  use_context=True)
-
-
-
+updater = Updater(token, use_context=True)
 
 
 def start(update: Update, context: CallbackContext):
@@ -43,6 +41,7 @@ def unknown_text(update: Update, context: CallbackContext):
     update.message.reply_text(
         "Sorry I can't recognize you , you said '%s'" % update.message.text)
 
+
 def show(update: Update, context: CallbackContext):
     pair = update.message.text[6:]
     ftx = FtxClient(key, secret, 'Main account')
@@ -50,18 +49,13 @@ def show(update: Update, context: CallbackContext):
         dt = ftx.get_single_market(pair)
         update.message.reply_text(
             "Price for pair: '%s'" % dt['price'])
-    except :
+    except:
         update.message.reply_text(
             "No such market at FTX Exchange: '%s'" % pair)
 
 
-
-
-
-
 updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CommandHandler('help', help))
-
 updater.dispatcher.add_handler(CommandHandler('show', show))
 updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown))
 updater.dispatcher.add_handler(MessageHandler(
@@ -69,5 +63,10 @@ updater.dispatcher.add_handler(MessageHandler(
 
 # Filters out unknown messages.
 updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown_text))
+
+updater.start_webhook(listen="0.0.0.0",
+                        port=int(PORT),
+                        url_path=token)
+updater.bot.setWebhook('https://spc-bot.herokuapp.com/' + token)
 
 updater.start_polling()
