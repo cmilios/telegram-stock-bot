@@ -54,9 +54,14 @@ def show(update: Update, context: CallbackContext):
             "No such market at FTX Exchange: '%s'" % pair)
 
 
+def tolis(update: Update, context:CallbackContext):
+    update.message.reply_text("Αποστόλη γαμιέσαι")
+
+
 updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CommandHandler('help', help))
 updater.dispatcher.add_handler(CommandHandler('show', show))
+updater.dispatcher.add_handler(CommandHandler('tolis', tolis))
 updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown))
 updater.dispatcher.add_handler(MessageHandler(
     Filters.command, unknown))  # Filters out unknown commands
