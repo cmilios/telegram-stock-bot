@@ -54,10 +54,8 @@ def show(update: Update, context: CallbackContext):
             "No such market at FTX Exchange: '%s'" % pair)
 
 
-def tolis(update: Update, context:CallbackContext):
-    # update.message.reply_text("Αποστόλη γαμιέσαι")
-    chatId = update.message.chat.id
-    context.bot.send_photo(chat_id=chatId, photo=open("../aa"))
+def tolis(update: Update, context: CallbackContext):
+    update.message.reply_text("Αποστόλη γαμιέσαι")
 
 
 
