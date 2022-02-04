@@ -57,7 +57,8 @@ def show(update: Update, context: CallbackContext):
 def tolis(update: Update, context:CallbackContext):
     # update.message.reply_text("Αποστόλη γαμιέσαι")
     chatId = update.message.chat.id
-    context.bot.sent_photo(chatId, open('../photo_2022-02-04_21-12-27.jpg'))
+    context.bot.send_photo(chat_id=chatId, photo=open("../aa"))
+
 
 
 updater.dispatcher.add_handler(CommandHandler('start', start))
